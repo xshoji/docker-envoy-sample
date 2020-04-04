@@ -5,8 +5,10 @@ services:
     image: xshoji/centos7:0.1
     build:
       context: ../
-      dockerfile: ./centos7/Dockerfile
+      dockerfile: ./centos7-envoy/Dockerfile
     #  - [docker-compose up したコンテナを起動させ続ける方法 - Qiita](https://qiita.com/sekitaka_1214/items/2af73d5dc56c6af8a167)
+    ports:
+      - "8080:80"
     tty: true
     environment:
-      COMPOSE_PROJECT_NAME: centos7
+      COMPOSE_PROJECT_NAME: centos7-envoy
