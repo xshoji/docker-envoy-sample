@@ -3,6 +3,9 @@
 docker-envoy-sample
 
 ```
-// run
-docker compose up -d
+// up
+docker-compose up -d --build
+
+// down
+docker-compose down
 ```
