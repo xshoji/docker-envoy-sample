@@ -14,7 +14,7 @@ RUN apk update \
   && rm -rf /var/cache/apk/* \
 ;
 
-# copy app src
+# copy app
 COPY ./app/src/app /opt/app
 
 ENTRYPOINT ["/opt/app"]
