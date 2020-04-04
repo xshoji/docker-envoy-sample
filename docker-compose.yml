@@ -5,14 +5,17 @@ services:
     image: envoy:v1
     build:
       context: .
-      dockerfile: envoy/Dockerfile
+      dockerfile: ./envoy/Dockerfile
     ports:
         - "80:10000"
     expose: 
       - "9000"
     tty: true
+    volumes:
+      - ./envoy/config:/opt/config
     networks:
       - front
+
 
   # request front:8080 remap to envoy:9000
   front:
@@ -20,7 +23,7 @@ services:
     image: front:v1
     build:
       context: .
-      dockerfile: nginx/Dockerfile
+      dockerfile: ./nginx/Dockerfile
     expose: 
       - "8080"
     tty: true
@@ -33,7 +36,7 @@ services:
     image: app:v1
     build:
       context: .
-      dockerfile: app/Dockerfile
+      dockerfile: ./app/Dockerfile
     tty: true
     networks:
       - back
@@ -48,7 +51,7 @@ services:
     image: app:v1
     build:
       context: .
-      dockerfile: app/Dockerfile
+      dockerfile: ./app/Dockerfile
     tty: true
     networks:
       - back
