@@ -5,9 +5,9 @@ services:
     build:
       context: .
       dockerfile: envoy/Dockerfile
-      ports:
+    ports:
         - "80:10000"
-      tty: true
+    tty: true
     networks:
       - envoy
 
@@ -17,11 +17,12 @@ services:
       context: .
       dockerfile: centos7-envoy/Dockerfile
     #  - [docker-compose up したコンテナを起動させ続ける方法 - Qiita](https://qiita.com/sekitaka_1214/items/2af73d5dc56c6af8a167)
-   expose: 8080
-    tty: true
-    networks:
-      - envoy
-      - app
+   expose: 
+     - "8080"
+   tty: true
+   networks:
+     - envoy
+     - app
 
 networks:
   envoy:
