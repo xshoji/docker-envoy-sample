@@ -9,7 +9,6 @@ RUN apk update \
   curl \
   less \
   vim \
-  go \
 ;
 
 # timezone
@@ -19,6 +18,6 @@ RUN apk add tzdata && \
     rm -rf /var/cache/apk/*
 
 # copy app src
-COPY ./app/src/main.go /tmp/main.go
+COPY ./app/src/app /opt/app
 
-ENTRYPOINT ["go", "run", "/tmp/main.go"]
+ENTRYPOINT ["/opt/app"]
