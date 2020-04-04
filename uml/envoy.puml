@@ -12,12 +12,12 @@ actor Mac as Mac
 
 package SidecarUnit as SidecarUnitFront {
   node envoy-front <<container>> as EnvoyFront {
-    component "listener-config" as ListenerConfigFront
+    component "listener-config" <<yaml>> as ListenerConfigFront
     note top of ListenerConfigFront 
       Downstreamに対する設定
     end note
     
-    component "cluster-config" as ClusterConfigFront
+    component "cluster-config" <<yaml>> as ClusterConfigFront
     note bottom of ClusterConfigFront 
       Upstreamに対する設定
     end note    
@@ -27,8 +27,8 @@ package SidecarUnit as SidecarUnitFront {
 
 package SidecarUnit as SidecarUnitApp {
   node envoy-app <<container>> as EnvoyApp {
-    component "listener-config" as ListenerConfigApp
-    component "cluster-config" as ClusterConfigApp
+    component "listener-config" <<yaml>>  as ListenerConfigApp
+    component "cluster-config" <<yaml>> as ClusterConfigApp
   }
   node app <<container>> as App
 }
