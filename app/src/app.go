@@ -27,7 +27,7 @@ func main() {
 			return
 		}
 		// output an access log to /dev/stdout
-		log.Print("| RemoteAddr: ", r.RemoteAddr, ", RequestURI:", r.RequestURI, ", UserAgent:", r.UserAgent())
+		log.Print("| RemoteAddr:", r.RemoteAddr, ", RequestURI:", r.RequestURI, ", UserAgent:", r.UserAgent())
 		// response
 		fmt.Fprintf(w, "Hello world\n")
 		fmt.Fprintf(w, "text: %s\n", text)
