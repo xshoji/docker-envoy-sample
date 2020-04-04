@@ -14,22 +14,20 @@ func main() {
 		port = "8080"
 	}
 	text := os.Getenv("APP_TEXT")
+	hostname, _ := os.Hostname()
 	if text == "" {
-		hostname, _ := os.Hostname()
 		text = hostname
 	}
 
 	// Get request
-	// curl http://localhost:8080/get?query=aaa\&test=name\&name=xshoji
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// - [How can I handle http requests of different methods to / in Go? - Stack Overflow](https://stackoverflow.com/questions/15240884/how-can-i-handle-http-requests-of-different-methods-to-in-go)
 		if r.Method != "GET" {
 			fmt.Fprintf(w, "Incorrect method. GET only.\n")
 			return
 		}
-
 		fmt.Fprintf(w, "Hello world\n")
 		fmt.Fprintf(w, "text: %s\n", text)
+		fmt.Fprintf(w, "hostname: %s\n", hostname)
 	})
 
 	var err error
