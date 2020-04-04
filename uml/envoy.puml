@@ -1,0 +1,30 @@
+@startuml
+title envoy
+
+'==============================
+' Setting
+'==============================
+left to right direction
+skinparam handwritten true
+
+
+node "Host"
+node "Listener"
+node "Cluster"
+
+'actor User as 
+actor User
+node envoy as envoyFront
+node front
+
+node envoy as envoyApp
+node app
+
+User --> envoyFront : <<Downstream>>
+User <-- envoyFront : <<Downstream>>
+
+User <-- envoyFront : <<Upstream>>
+User --> envoyFront : <<Upstream>>
+
+
+@enduml
