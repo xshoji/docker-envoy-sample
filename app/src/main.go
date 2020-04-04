@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	// get text
 	text := os.Getenv("APP_TEXT")
 	// get hostname
