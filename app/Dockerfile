@@ -8,14 +8,11 @@ RUN apk update \
   bash \
   curl \
   less \
-  vim \
+  tzdata \
+  && cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+  && apk del tzdata \
+  && rm -rf /var/cache/apk/* \
 ;
-
-# timezone
-RUN apk add tzdata && \
-    cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
-    apk del tzdata && \
-    rm -rf /var/cache/apk/*
 
 # copy app src
 COPY ./app/src/app /opt/app
