@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy-dev:latest
+FROM envoyproxy/envoy-alpine:latest
 RUN apt-get update
 RUN apt-get install -y curl
 COPY ./envoy/config/envoy.yaml /etc/envoy.yaml

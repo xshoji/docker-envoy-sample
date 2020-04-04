@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: nginx/Dockerfile
     #  - [docker-compose up したコンテナを起動させ続ける方法 - Qiita](https://qiita.com/sekitaka_1214/items/2af73d5dc56c6af8a167)
-    expose: 
+    expose:
       - "8080"
     tty: true
     networks:
