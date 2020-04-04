@@ -28,7 +28,7 @@ static_resources:
               - match:
                   prefix: "/"
                 route:
-                  host_rewrite: www.yahoo.co.jp
+                  host_rewrite: front
                   cluster: service_yahoo
           http_filters:
           - name: envoy.filters.http.router
