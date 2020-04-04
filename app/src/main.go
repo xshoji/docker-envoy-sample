@@ -9,20 +9,22 @@ import (
 
 func main() {
 
+	// get text
+	text := os.Getenv("APP_TEXT")
+	// get hostname
+	hostname, _ := os.Hostname()
+	// get port
 	port := os.Getenv("APP_PORT")
 	if port == "" {
+		// default listen port
 		port = "8080"
 	}
-	text := os.Getenv("APP_TEXT")
-	hostname, _ := os.Hostname()
-	if text == "" {
-		text = hostname
-	}
 
-	// Get request
+	// GET request handling
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "GET" {
-			fmt.Fprintf(w, "Incorrect method. GET only.\n")
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			fmt.Fprintf(w, "Incorrect http method. GET only.\n")
 			return
 		}
 		fmt.Fprintf(w, "Hello world\n")
@@ -30,11 +32,9 @@ func main() {
 		fmt.Fprintf(w, "hostname: %s\n", hostname)
 	})
 
-	var err error
-	port = ":" + port
+	// start server
 	fmt.Printf("server(http) %s\n", port)
-	err = http.ListenAndServe(port, nil)
-	if err != nil {
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
