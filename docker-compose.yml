@@ -1,6 +1,7 @@
 version: '2'
 services:
   envoy:
+    container_name: envoy
     image: envoy:v1
     build:
       context: .
@@ -11,6 +12,7 @@ services:
     networks:
       - front
   front:
+    container_name: front
     image: front:v1
     build:
       context: .
