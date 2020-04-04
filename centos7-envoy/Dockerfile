@@ -12,8 +12,6 @@ RUN yum update -y \
   && yum clean all \
 ;
 
-COPY ./commonfiles/bashrc /root/.bashrc
-
 #RUN yum-config-manager --add-repo https://getenvoy.io/linux/centos/tetrate-getenvoy.repo
 #
 #RUN yum-config-manager --enable tetrate-getenvoy-nightly
