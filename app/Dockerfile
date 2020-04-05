@@ -1,12 +1,9 @@
 # Base image
 FROM alpine:3.11.3
 
-# commands
-RUN apk update \
-  && apk upgrade \
-  && apk add \
+RUN apk add \
   bash \
-  curl \
+  curl \    
   less \
   tzdata \
   && cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
