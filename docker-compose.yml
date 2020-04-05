@@ -8,14 +8,11 @@ services:
       dockerfile: ./envoy/Dockerfile
     ports:
         - "80:10000"
-    expose: 
-      - "9000"
     tty: true
     volumes:
-      - ./envoy/config:/opt/config
+      - ./envoy/config:/opt/envoy/config
     networks:
       - front
-
 
   # request front:8080 remap to envoy:9000
   front:
