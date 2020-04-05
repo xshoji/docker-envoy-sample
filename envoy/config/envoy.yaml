@@ -56,7 +56,7 @@ static_resources:
                   prefix: "/"
                 route:
                   host_rewrite: envoy
-                  cluster: service_app1
+                  cluster: service_app
           access_log:
             - name: envoy.file_access_log
               config:
@@ -74,13 +74,17 @@ static_resources:
       - socket_address:
           address: front
           port_value: 8080
-  - name: service_app1
+  - name: service_app
+    type: STRICT_DNS
     connect_timeout: 0.25s
-    type: LOGICAL_DNS
-    # Comment out the following line to test on v6 networks
-    dns_lookup_family: V4_ONLY
     lb_policy: ROUND_ROBIN
-    hosts:
-      - socket_address:
-          address: app1
-          port_value: 8081
+    load_assignment:
+      cluster_name: httpd_cluster
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address: { address: app1, port_value: 8081 }
+        - endpoint:
+            address:
+              socket_address: { address: app2, port_value: 8082 }
