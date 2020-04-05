@@ -49,4 +49,10 @@ ClusterConfigApp --> App : <<Upstream>>
 ' layout
 
 
+'------------
+' referenses
+
+' > Application Instance Identity and Intro to Envoy in PCF  
+' > https://gist.github.com/nikhilsuvarna/bd0aa0ef01880270c13d145c61a4af22#envoy
+
 @enduml
