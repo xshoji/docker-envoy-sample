@@ -13,7 +13,7 @@ services:
       - ./envoy/config:/opt/envoy/config
     networks:
       - front
-#      - back
+      - back
 
   # request front:8080 remap to envoy:9000
   front:
@@ -21,12 +21,15 @@ services:
     image: front:v1
     build:
       context: .
-      dockerfile: ./nginx/Dockerfile
+      dockerfile: ./front/Dockerfile
     expose: 
       - "8080"
     tty: true
     networks:
       - front
+    environment:
+      FRONT_PROXY_DESTINATION: http://envoy:9000
+      FRONT_PORT: 8080
 
   app1:
     container_name: app1
@@ -36,7 +39,7 @@ services:
       dockerfile: ./app/Dockerfile
     tty: true
     networks:
-      - front
+      - back
     expose:
         - "8081"
     environment:
@@ -51,7 +54,7 @@ services:
       dockerfile: ./app/Dockerfile
     tty: true
     networks:
-      - front
+      - back
     expose:
         - "8082"
     environment:
@@ -60,4 +63,4 @@ services:
 
 networks:
   front:
-#  back:
+  back:

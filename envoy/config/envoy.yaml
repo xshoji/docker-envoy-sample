@@ -1,29 +1,86 @@
-listeners:
-  - address:
+admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address:
+      protocol: TCP
+      address: 127.0.0.1
+      port_value: 9901
+static_resources:
+  listeners:
+  - name: listener_0
+    address:
       socket_address:
+        protocol: TCP
         address: 0.0.0.0
-        port_value: 80
+        port_value: 10000
     filter_chains:
-      - filters:
-          - name: envoy.http_connection_manager
-            config:
-              codec_type: auto
-              stat_prefix: ingress_http
-              route_config:
-                name: local_route
-                virtual_hosts:
-                  - name: backend
-                    domains:
-                      - "*"
-                    routes:
-                      - match:
-                          prefix: "/service/1"
-                        route:
-                          cluster: service1
-                      - match:
-                          prefix: "/service/2"
-                        route:
-                          cluster: service2
-              http_filters:
-                - name: envoy.router
-                  config: {}
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: local_service
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/"
+                route:
+                  host_rewrite: envoy
+                  cluster: service_front
+          access_log:
+            - name: envoy.file_access_log
+              config:
+                path: /dev/stdout
+          http_filters:
+          - name: envoy.router
+  - name: listener_1
+    address:
+      socket_address:
+        protocol: TCP
+        address: 0.0.0.0
+        port_value: 9000
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: local_service
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/"
+                route:
+                  host_rewrite: envoy
+                  cluster: service_app1
+          access_log:
+            - name: envoy.file_access_log
+              config:
+                path: /dev/stdout
+          http_filters:
+          - name: envoy.router
+  clusters:
+  - name: service_front
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    # Comment out the following line to test on v6 networks
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+      - socket_address:
+          address: front
+          port_value: 8080
+  - name: service_app1
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    # Comment out the following line to test on v6 networks
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+      - socket_address:
+          address: app1
+          port_value: 8081
