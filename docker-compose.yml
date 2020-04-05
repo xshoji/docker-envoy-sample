@@ -13,6 +13,7 @@ services:
       - ./envoy/config:/opt/envoy/config
     networks:
       - front
+#      - back
 
   # request front:8080 remap to envoy:9000
   front:
@@ -26,7 +27,6 @@ services:
     tty: true
     networks:
       - front
-      - back
 
   app1:
     container_name: app1
@@ -36,13 +36,13 @@ services:
       dockerfile: ./app/Dockerfile
     tty: true
     networks:
-      - back
-    ports:
-        - "18081:8081"
+      - front
+    expose:
+        - "8081"
     environment:
       APP_PORT: 8081
       APP_TEXT: "I am app1"
-      
+
   app2:
     container_name: app2
     image: app:v1
@@ -51,13 +51,13 @@ services:
       dockerfile: ./app/Dockerfile
     tty: true
     networks:
-      - back
-    ports:
-        - "18082:8082"
+      - front
+    expose:
+        - "8082"
     environment:
       APP_PORT: 8082
       APP_TEXT: "I am app2"
 
 networks:
   front:
-  back:
+#  back:
