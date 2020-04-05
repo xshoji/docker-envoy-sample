@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 )
 
@@ -21,16 +22,19 @@ func main() {
 		port = "8080"
 	}
 
-	// GET request handling
+	origin, _ := url.Parse(proxyDestination)
+	director := func(req *http.Request) {
+		req.Header.Add("X-Forwarded-Host", req.Host)
+		req.Header.Add("X-Origin-Host", origin.Host)
+		req.URL.Scheme = "http"
+		req.URL.Host = origin.Host
+	}
+	proxy := &httputil.ReverseProxy{Director: director}
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// output an access log to /dev/stdout
 		log.Print("| RemoteAddr:", r.RemoteAddr, ", RequestURI:", r.RequestURI, ", UserAgent:", r.UserAgent())
-		// response
-		response, err := DoHttpGet(proxyDestination, map[string]string{})
-		if err != nil {
-			log.Fatal(err)
-		}
-		response.Write(w)
+		proxy.ServeHTTP(w, r)
 	})
 
 	// start server
@@ -38,31 +42,4 @@ func main() {
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
-}
-
-//=======================================
-// HTTP Utils
-//=======================================
-
-// Get request
-func DoHttpGet(url string, headers map[string]string) (*http.Response, error) {
-	// GET
-	log.Println(">---------- Get request start ---------->")
-	log.Printf("url : %v\n", url)
-	resp, err := DoHttpRequest("GET", url, nil, headers)
-	log.Println("<----------  Get request end  ----------<")
-	return resp, err
-}
-
-func DoHttpRequest(method string, url string, body io.Reader, headers map[string]string) (*http.Response, error) {
-	req, err := http.NewRequest(method, url, body)
-	if err != nil {
-		log.Fatal(err)
-		return nil, err
-	}
-	for key, value := range headers {
-		log.Printf("header [%s] : %s\n", key, value)
-		req.Header.Set(key, value)
-	}
-	return http.DefaultClient.Do(req)
 }
