@@ -5,7 +5,6 @@ title structure
 ' Setting
 '==============================
 left to right direction
-skinparam handwritten true
 
 
 
@@ -17,18 +16,21 @@ actor User
 node Mac as Mac {
    component ":80" as MacInputPort
 }
-node "envoy" <<container>> as EnvoyFront {
-   component ":10000" as EnvoyFrontInputPort1
-   component ":9000" as EnvoyFrontInputPort2
-}
-node front <<container>> as Front {
-   component ":8080" as FrontInputPort
-}
-node app1 <<container>> as App1 {
-   component ":8081" as App1InputPort
-}
-node app2 <<container>> as App2 {
-   component ":8082" as App2InputPort
+
+cloud Docker {
+  node "envoy" <<container>> as EnvoyFront {
+     component ":10000" as EnvoyFrontInputPort1
+     component ":9000" as EnvoyFrontInputPort2
+  }
+  node front <<container>> as Front {
+     component ":8080" as FrontInputPort
+  }
+  node app1 <<container>> as App1 {
+     component ":8081" as App1InputPort
+  }
+  node app2 <<container>> as App2 {
+     component ":8082" as App2InputPort
+  }
 }
 
 
