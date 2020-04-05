@@ -7,6 +7,11 @@ title structure
 left to right direction
 skinparam handwritten true
 
+
+
+'==============================
+' Definition
+'==============================
 actor User
 
 node Mac as Mac {
@@ -26,6 +31,11 @@ node app2 <<container>> as App2 {
    component ":8082" as App2InputPort
 }
 
+
+
+'==============================
+' Relation
+'==============================
 User --> MacInputPort
 MacInputPort --> EnvoyFrontInputPort1
 EnvoyFrontInputPort1 --> FrontInputPort
@@ -35,14 +45,9 @@ EnvoyFrontInputPort2 --> App1InputPort
 EnvoyFrontInputPort2 --> App2InputPort
 
 
+
 '------------
 ' layout
 
-
-'------------
-' referenses
-
-' > Application Instance Identity and Intro to Envoy in PCF  
-' > https://gist.github.com/nikhilsuvarna/bd0aa0ef01880270c13d145c61a4af22#envoy
 
 @enduml
